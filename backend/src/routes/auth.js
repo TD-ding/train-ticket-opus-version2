@@ -1,7 +1,7 @@
 // 用户认证路由：注册与登录。
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const { load, save } = require("../db");
+const { load, save, genId } = require("../db");
 const { sign } = require("../middleware/auth");
 
 const router = express.Router();
@@ -9,19 +9,20 @@ const router = express.Router();
 // 用户注册：用户名唯一，密码加密存储，默认普通用户角色。
 router.post("/register", (req, res) => {
   const { username, password } = req.body || {};
-  if (!username || !password) {
+  const name = (username || "").trim();
+  if (!name || !password) {
     return res.status(400).json({ error: "用户名和密码不能为空" });
   }
   if (password.length < 6) {
     return res.status(400).json({ error: "密码至少 6 位" });
   }
   const db = load();
-  if (db.users.some((u) => u.username === username)) {
+  if (db.users.some((u) => u.username === name)) {
     return res.status(409).json({ error: "用户名已存在" });
   }
   const user = {
-    id: "U" + Date.now(),
-    username,
+    id: genId("U"),
+    username: name,
     password: bcrypt.hashSync(password, 10),
     role: "user"
   };
@@ -33,11 +34,12 @@ router.post("/register", (req, res) => {
 // 用户登录：校验密码，成功返回 token 和基本信息。
 router.post("/login", (req, res) => {
   const { username, password } = req.body || {};
-  if (!username || !password) {
+  const name = (username || "").trim();
+  if (!name || !password) {
     return res.status(400).json({ error: "用户名和密码不能为空" });
   }
   const db = load();
-  const user = db.users.find((u) => u.username === username);
+  const user = db.users.find((u) => u.username === name);
   if (!user || !bcrypt.compareSync(password, user.password)) {
     return res.status(401).json({ error: "用户名或密码错误" });
   }

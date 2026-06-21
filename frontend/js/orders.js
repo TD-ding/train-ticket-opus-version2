@@ -16,7 +16,8 @@ async function loadOrders() {
       return;
     }
     box.innerHTML = "";
-    orders.reverse().forEach((o) => box.appendChild(renderOrder(o)));
+    // 倒序展示（最新在前），用 slice 复制避免就地反转影响原数组。
+    orders.slice().reverse().forEach((o) => box.appendChild(renderOrder(o)));
   } catch (err) {
     toast(err.message);
   }

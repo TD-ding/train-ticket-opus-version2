@@ -1,6 +1,6 @@
 // 管理员路由：车次的增删改查与订单总览，全部需要管理员权限。
 const express = require("express");
-const { load, save } = require("../db");
+const { load, save, genId } = require("../db");
 const { auth, adminOnly } = require("../middleware/auth");
 const { SEAT_TYPES } = require("../constants");
 
@@ -22,7 +22,7 @@ router.post("/trains", (req, res) => {
   }
   const db = load();
   const train = {
-    id: "T" + Date.now(),
+    id: genId("T"),
     trainNo,
     from,
     to,

@@ -80,4 +80,12 @@ function save() {
   fs.writeFileSync(DB_FILE, JSON.stringify(cache, null, 2), "utf-8");
 }
 
-module.exports = { load, save };
+// 生成带前缀的唯一 ID。仅用时间戳在同一毫秒内会碰撞，
+// 这里追加一个递增计数与随机段，保证并发创建时也不重复。
+let counter = 0;
+function genId(prefix) {
+  counter = (counter + 1) % 100000;
+  return prefix + Date.now().toString(36) + counter.toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
+module.exports = { load, save, genId };
