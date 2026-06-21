@@ -66,4 +66,19 @@ router.get("/orders", (req, res) => {
   res.json(db.orders);
 });
 
+// 运营统计：车次数、订单数、有效订单售出票数与营收。
+router.get("/stats", (req, res) => {
+  const db = load();
+  const paid = db.orders.filter((o) => o.status === "paid");
+  const ticketsSold = paid.reduce((sum, o) => sum + (o.quantity || 1), 0);
+  const revenue = paid.reduce((sum, o) => sum + (o.totalPrice || o.price), 0);
+  res.json({
+    trains: db.trains.length,
+    orders: db.orders.length,
+    paidOrders: paid.length,
+    ticketsSold,
+    revenue
+  });
+});
+
 module.exports = router;

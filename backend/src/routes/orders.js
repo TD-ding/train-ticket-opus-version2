@@ -5,11 +5,16 @@ const { auth } = require("../middleware/auth");
 
 const router = express.Router();
 
-// 下单购票：校验车次、座位类型与余票，扣减库存并生成订单。
+// 下单购票：支持一次购买多张同类型座位，校验余票并扣减库存，生成订单。
 router.post("/", auth, (req, res) => {
-  const { trainId, seatType, passenger } = req.body || {};
+  const { trainId, seatType, passenger, quantity } = req.body || {};
   if (!trainId || !seatType || !passenger) {
     return res.status(400).json({ error: "车次、座位类型和乘客信息不能为空" });
+  }
+  // 购票数量默认为 1，限制在 1-5 张之间。
+  const qty = parseInt(quantity, 10) || 1;
+  if (qty < 1 || qty > 5) {
+    return res.status(400).json({ error: "单次购票数量需在 1-5 张之间" });
   }
   const db = load();
   const train = db.trains.find((t) => t.id === trainId);
@@ -20,11 +25,11 @@ router.post("/", auth, (req, res) => {
   if (!seat) {
     return res.status(400).json({ error: "座位类型不存在" });
   }
-  if (seat.sold >= seat.total) {
-    return res.status(409).json({ error: "该座位类型已售罄" });
+  if (seat.total - seat.sold < qty) {
+    return res.status(409).json({ error: "余票不足" });
   }
   // 扣减余票，保证库存一致性。
-  seat.sold += 1;
+  seat.sold += qty;
   const order = {
     id: "O" + Date.now(),
     userId: req.user.id,
@@ -35,7 +40,9 @@ router.post("/", auth, (req, res) => {
     date: train.date,
     departTime: train.departTime,
     seatType,
+    quantity: qty,
     price: seat.price,
+    totalPrice: seat.price * qty,
     passenger,
     status: "paid",
     createdAt: new Date().toISOString()
@@ -63,10 +70,11 @@ router.post("/:id/cancel", auth, (req, res) => {
     return res.status(400).json({ error: "订单已退票" });
   }
   order.status = "cancelled";
-  // 回补对应车次座位库存。
+  // 回补对应车次座位库存（按购买数量）。
   const train = db.trains.find((t) => t.id === order.trainId);
-  if (train && train.seats[order.seatType] && train.seats[order.seatType].sold > 0) {
-    train.seats[order.seatType].sold -= 1;
+  const qty = order.quantity || 1;
+  if (train && train.seats[order.seatType]) {
+    train.seats[order.seatType].sold = Math.max(0, train.seats[order.seatType].sold - qty);
   }
   save();
   res.json(order);

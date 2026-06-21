@@ -112,11 +112,12 @@ async function submitBook(e) {
   e.preventDefault();
   const seatType = document.getElementById("seatType").value;
   const passenger = document.getElementById("passenger").value.trim();
+  const quantity = parseInt(document.getElementById("quantity").value, 10) || 1;
   if (!passenger) { toast("请输入乘客姓名"); return; }
   try {
     await request("/orders", {
       method: "POST",
-      body: JSON.stringify({ trainId: currentTrain.id, seatType, passenger })
+      body: JSON.stringify({ trainId: currentTrain.id, seatType, passenger, quantity })
     });
     document.getElementById("bookModal").classList.add("hidden");
     toast("购票成功");
