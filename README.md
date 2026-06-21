@@ -48,6 +48,13 @@ train-ticket-opus-version2/
 │   ├── index.html
 │   ├── css/admin.css
 │   └── js/admin.js
+├── docs/                   # 项目文档
+│   ├── frontend.md         # 用户前端
+│   ├── backend.md          # 后端 API
+│   ├── admin-frontend.md   # 管理后台
+│   └── deployment.md       # 部署
+├── Dockerfile
+├── docker-compose.yml
 ├── .env.example
 ├── .gitignore
 └── .dockerignore
@@ -66,6 +73,14 @@ npm start          # 默认监听 3000 端口
 - 管理后台：http://localhost:3000/admin/
 
 > 后端通过 Express 静态托管同时对外提供前端与管理端页面，单进程即可运行整套系统。
+
+### 使用 Docker
+
+```bash
+docker compose up --build      # 默认映射宿主机 3000 端口
+```
+
+更完整的部署说明见 [docs/deployment.md](docs/deployment.md)。
 
 ### 环境变量
 
@@ -93,6 +108,14 @@ npm start          # 默认监听 3000 端口
 | PUT | `/api/admin/trains/:id` | 修改车次 | 管理员 |
 | DELETE | `/api/admin/trains/:id` | 删除车次 | 管理员 |
 | GET | `/api/admin/orders` | 订单总览 | 管理员 |
+| GET | `/api/admin/stats` | 运营统计 | 管理员 |
+
+## 文档
+
+- [用户前端文档](docs/frontend.md)
+- [后端文档](docs/backend.md)
+- [管理后台文档](docs/admin-frontend.md)
+- [部署文档](docs/deployment.md)
 
 ## 许可证
 
