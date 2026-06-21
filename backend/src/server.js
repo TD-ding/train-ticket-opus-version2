@@ -31,6 +31,19 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
+// 404 兜底：未匹配的 API 路径返回统一 JSON 错误。
+app.use("/api", (req, res) => {
+  res.status(404).json({ error: "接口不存在" });
+});
+
+// 统一错误处理中间件：捕获路由抛出的异常，返回一致的错误结构，
+// 避免把堆栈细节泄露给前端。
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(err.status || 500).json({ error: err.message || "服务器内部错误" });
+});
+
 // 首次启动时确保存在一个默认管理员账号，便于演示。
 function ensureAdmin() {
   const db = load();
