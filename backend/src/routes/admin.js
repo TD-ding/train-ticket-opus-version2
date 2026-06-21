@@ -43,6 +43,19 @@ router.put("/trains/:id", (req, res) => {
   if (!train) {
     return res.status(404).json({ error: "车次不存在" });
   }
+  // 若更新座位信息，校验座位类型合法，且总座位数不得小于已售数。
+  if (req.body.seats) {
+    const invalid = Object.keys(req.body.seats).filter((k) => !SEAT_TYPES.includes(k));
+    if (invalid.length) {
+      return res.status(400).json({ error: "存在无效的座位类型: " + invalid.join(", ") });
+    }
+    for (const [k, seat] of Object.entries(req.body.seats)) {
+      const sold = train.seats[k] ? train.seats[k].sold : 0;
+      if (seat.total < sold) {
+        return res.status(400).json({ error: `${k} 总座位数不能小于已售出的 ${sold} 张` });
+      }
+    }
+  }
   Object.assign(train, req.body, { id: train.id });
   save();
   res.json(train);
