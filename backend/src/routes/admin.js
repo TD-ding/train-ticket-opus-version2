@@ -2,6 +2,7 @@
 const express = require("express");
 const { load, save } = require("../db");
 const { auth, adminOnly } = require("../middleware/auth");
+const { SEAT_TYPES } = require("../constants");
 
 const router = express.Router();
 
@@ -13,6 +14,11 @@ router.post("/trains", (req, res) => {
   const { trainNo, from, to, date, departTime, arriveTime, seats } = req.body || {};
   if (!trainNo || !from || !to || !date || !departTime || !arriveTime || !seats) {
     return res.status(400).json({ error: "车次信息不完整" });
+  }
+  // 校验座位类型合法，避免写入未知座位键。
+  const invalid = Object.keys(seats).filter((k) => !SEAT_TYPES.includes(k));
+  if (invalid.length) {
+    return res.status(400).json({ error: "存在无效的座位类型: " + invalid.join(", ") });
   }
   const db = load();
   const train = {
