@@ -30,15 +30,18 @@ async function searchTrains(e) {
   if (to) params.append("to", to);
   if (date) params.append("date", date);
   const box = document.getElementById("results");
-  box.innerHTML = "";
+  // 查询期间显示加载提示，避免空白等待。
+  box.innerHTML = '<div class="empty">正在查询车次…</div>';
   try {
     const trains = await request("/trains?" + params.toString());
+    box.innerHTML = "";
     if (!trains.length) {
       box.innerHTML = '<div class="empty">没有找到符合条件的车次</div>';
       return;
     }
     trains.forEach((t) => box.appendChild(renderTrain(t)));
   } catch (err) {
+    box.innerHTML = '<div class="empty">查询失败，请稍后重试</div>';
     toast(err.message);
   }
 }
@@ -51,9 +54,15 @@ function renderTrain(t) {
     .map(([k, s]) => {
       const left = s.total - s.sold;
       const name = seatName(k);
-      return `<span class="seat-tag">${name} ¥${s.price} 余<b>${left}</b></span>`;
+      const cls = left <= 0 ? "sold-out" : "";
+      const leftText = left <= 0 ? "无票" : left;
+      return `<span class="seat-tag ${cls}">${name} ¥${s.price} 余<b>${leftText}</b></span>`;
     })
     .join("");
+  // 全部座位售罄时禁用购票按钮。
+  const totalLeft = Object.values(t.seats).reduce((sum, s) => sum + (s.total - s.sold), 0);
+  const bookDisabled = totalLeft <= 0 ? "disabled" : "";
+  const bookLabel = totalLeft <= 0 ? "已售罄" : "购票";
   div.innerHTML = `
     <div class="train-head">
       <span class="train-no">${t.trainNo}</span>
@@ -66,9 +75,10 @@ function renderTrain(t) {
     </div>
     <div class="seats">${seatTags}</div>
     <div style="margin-top:12px;text-align:right;">
-      <button class="btn primary small">购票</button>
+      <button class="btn primary small" ${bookDisabled}>${bookLabel}</button>
     </div>`;
-  div.querySelector("button").onclick = () => openBook(t);
+  const btn = div.querySelector("button");
+  if (totalLeft > 0) btn.onclick = () => openBook(t);
   return div;
 }
 
@@ -84,8 +94,14 @@ function openBook(train) {
   }
   currentTrain = train;
   const select = document.getElementById("seatType");
+  // 售罄的座位类型禁止选择，并在文案上标注。
   select.innerHTML = Object.entries(train.seats)
-    .map(([k, s]) => `<option value="${k}">${seatName(k)} ¥${s.price}（余${s.total - s.sold}）</option>`)
+    .map(([k, s]) => {
+      const left = s.total - s.sold;
+      const disabled = left <= 0 ? "disabled" : "";
+      const tail = left <= 0 ? "已售罄" : `余${left}`;
+      return `<option value="${k}" ${disabled}>${seatName(k)} ¥${s.price}（${tail}）</option>`;
+    })
     .join("");
   document.getElementById("bookTitle").textContent = `${train.trainNo} 购票`;
   document.getElementById("bookModal").classList.remove("hidden");
