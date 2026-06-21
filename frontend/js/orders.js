@@ -41,7 +41,8 @@ function renderOrder(o) {
       <span class="seat-tag">${o.date}</span>
       <span class="seat-tag">${seatName(o.seatType)}</span>
       <span class="seat-tag">乘客：${o.passenger}</span>
-      <span class="seat-tag">¥${o.price}</span>
+      <span class="seat-tag">${o.quantity || 1} 张</span>
+      <span class="seat-tag">合计 ¥${o.totalPrice || o.price}</span>
     </div>`;
   if (o.status === "paid") {
     const wrap = document.createElement("div");
