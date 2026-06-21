@@ -4,8 +4,8 @@ const fs = require("fs");
 const path = require("path");
 
 // 数据文件统一存放在 data/ 目录，运行时自动创建。
-const DATA_DIR = path.join(__dirname, "data");
-const DB_FILE = path.join(DATA_DIR, "db.json");
+// 测试环境可通过 DB_FILE 环境变量指向临时文件，避免污染开发数据。
+const DB_FILE = process.env.DB_FILE || path.join(__dirname, "data", "db.json");
 
 // 内存中的数据快照，所有读写都先作用于此，再落盘。
 let cache = null;
@@ -65,7 +65,8 @@ function seed() {
 // 从磁盘加载数据；文件不存在则写入种子数据。
 function load() {
   if (cache) return cache;
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  const dir = path.dirname(DB_FILE);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   if (!fs.existsSync(DB_FILE)) {
     cache = seed();
     save();
@@ -77,6 +78,8 @@ function load() {
 
 // 将内存快照持久化到磁盘。
 function save() {
+  const dir = path.dirname(DB_FILE);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(DB_FILE, JSON.stringify(cache, null, 2), "utf-8");
 }
 
