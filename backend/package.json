@@ -1,0 +1,23 @@
+{
+  "name": "train-ticket-backend",
+  "version": "1.0.0",
+  "description": "12306-style train ticket booking backend (opus-version2)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "lint": "node node_modules/eslint/bin/eslint.js src/",
+    "test": "echo \"tests added in step 4\" && exit 0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "eslint": "^9.9.0"
+  },
+  "license": "MIT"
+}

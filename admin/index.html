@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>管理后台 · 易行火车票</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+  <!-- 管理员登录界面 -->
+  <div id="loginView" class="login-view">
+    <div class="login-card">
+      <h2>🚄 管理后台登录</h2>
+      <input type="text" id="adminUser" placeholder="管理员账号" />
+      <input type="password" id="adminPass" placeholder="密码" />
+      <button class="btn primary full" id="adminLoginBtn">登录</button>
+      <p class="hint">默认账号 admin / admin123</p>
+    </div>
+  </div>
+
+  <!-- 管理主界面 -->
+  <div id="adminView" class="admin-view hidden">
+    <header class="admin-top">
+      <div class="brand">🚄 火车票管理后台</div>
+      <div>
+        <span id="adminName"></span>
+        <button class="btn small" id="logoutBtn">退出</button>
+      </div>
+    </header>
+
+    <div class="admin-tabs">
+      <button class="atab active" data-view="trains">车次管理</button>
+      <button class="atab" data-view="orders">订单总览</button>
+    </div>
+
+    <main class="admin-main">
+      <!-- 车次管理 -->
+      <section id="trainsPanel">
+        <div class="panel-head">
+          <h3>车次列表</h3>
+          <button class="btn primary small" id="addTrainBtn">+ 新增车次</button>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>车次号</th><th>出发</th><th>到达</th><th>日期</th>
+              <th>发车</th><th>到达</th><th>票价(二等)</th><th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="trainBody"></tbody>
+        </table>
+      </section>
+
+      <!-- 订单总览 -->
+      <section id="ordersPanel" class="hidden">
+        <h3>全部订单</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>订单号</th><th>车次</th><th>行程</th><th>座位</th>
+              <th>乘客</th><th>金额</th><th>状态</th><th>下单时间</th>
+            </tr>
+          </thead>
+          <tbody id="orderBody"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- 车次编辑弹窗 -->
+  <div id="trainModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" id="closeTrain">&times;</span>
+      <h3 id="trainModalTitle">新增车次</h3>
+      <form id="trainForm">
+        <input type="hidden" id="trainId" />
+        <label>车次号 <input type="text" id="f_trainNo" /></label>
+        <label>出发地 <input type="text" id="f_from" /></label>
+        <label>到达地 <input type="text" id="f_to" /></label>
+        <label>日期 <input type="date" id="f_date" /></label>
+        <label>发车时间 <input type="text" id="f_depart" placeholder="08:00" /></label>
+        <label>到达时间 <input type="text" id="f_arrive" placeholder="12:30" /></label>
+        <label>商务座价/数 <input type="text" id="f_business" placeholder="1748/20" /></label>
+        <label>一等座价/数 <input type="text" id="f_first" placeholder="933/60" /></label>
+        <label>二等座价/数 <input type="text" id="f_second" placeholder="553/200" /></label>
+        <button type="submit" class="btn primary full">保存</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
