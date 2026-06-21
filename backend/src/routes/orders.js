@@ -1,6 +1,6 @@
 // 订单路由：下单、查看我的订单、退票。
 const express = require("express");
-const { load, save } = require("../db");
+const { load, save, genId } = require("../db");
 const { auth } = require("../middleware/auth");
 
 const router = express.Router();
@@ -31,7 +31,7 @@ router.post("/", auth, (req, res) => {
   // 扣减余票，保证库存一致性。
   seat.sold += qty;
   const order = {
-    id: "O" + Date.now(),
+    id: genId("O"),
     userId: req.user.id,
     trainId,
     trainNo: train.trainNo,

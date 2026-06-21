@@ -137,13 +137,17 @@ function parseSeat(value, existing) {
 }
 
 // 保存车次（新增或更新）。
+// 保存车次（新增或更新）。编辑时保留各座位已售数量，避免库存被重置。
 async function saveTrain(e) {
   e.preventDefault();
   const id = document.getElementById("trainId").value;
+  // 编辑场景下取出原车次，用于保留已售数。
+  const existing = id ? (await request(`/trains/${id}`)) : null;
+  const prevSeats = existing ? existing.seats : {};
   const seats = {};
-  const b = parseSeat(document.getElementById("f_business").value);
-  const f = parseSeat(document.getElementById("f_first").value);
-  const sd = parseSeat(document.getElementById("f_second").value);
+  const b = parseSeat(document.getElementById("f_business").value, prevSeats.business);
+  const f = parseSeat(document.getElementById("f_first").value, prevSeats.first);
+  const sd = parseSeat(document.getElementById("f_second").value, prevSeats.second);
   if (b) seats.business = b;
   if (f) seats.first = f;
   if (sd) seats.second = sd;
