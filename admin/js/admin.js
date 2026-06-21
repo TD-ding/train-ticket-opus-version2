@@ -42,7 +42,27 @@ async function adminLogin() {
     document.getElementById("adminName").textContent = data.username;
     document.getElementById("loginView").classList.add("hidden");
     document.getElementById("adminView").classList.remove("hidden");
+    loadStats();
     loadTrains();
+  } catch (err) {
+    toast(err.message);
+  }
+}
+
+// 加载并渲染运营统计卡片。
+async function loadStats() {
+  try {
+    const s = await request("/admin/stats");
+    const bar = document.getElementById("statsBar");
+    const cards = [
+      { label: "车次总数", value: s.trains },
+      { label: "订单总数", value: s.orders },
+      { label: "售出票数", value: s.ticketsSold },
+      { label: "营收(元)", value: "¥" + s.revenue }
+    ];
+    bar.innerHTML = cards
+      .map((c) => `<div class="stat-card"><div class="stat-value">${c.value}</div><div class="stat-label">${c.label}</div></div>`)
+      .join("");
   } catch (err) {
     toast(err.message);
   }
@@ -170,6 +190,7 @@ function switchView(view) {
   document.getElementById("ordersPanel").classList.toggle("hidden", view !== "orders");
   if (view === "trains") loadTrains();
   else loadOrders();
+  loadStats();
 }
 
 // 事件绑定。
