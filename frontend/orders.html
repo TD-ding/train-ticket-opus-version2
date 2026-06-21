@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的订单 · 易行火车票</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🚄 易行火车票</div>
+    <nav class="nav">
+      <a href="index.html">车票查询</a>
+      <a href="orders.html" class="active">我的订单</a>
+      <span id="userBox" class="user-box"></span>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>我的订单</h2>
+    <section id="orderList" class="results"></section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/orders.js"></script>
+</body>
+</html>

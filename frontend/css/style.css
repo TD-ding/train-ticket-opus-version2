@@ -1,0 +1,156 @@
+/* 易行火车票 用户端样式 */
+:root {
+  --primary: #2c6fbb;
+  --primary-dark: #1f5494;
+  --bg: #f4f6f9;
+  --card: #ffffff;
+  --text: #222;
+  --muted: #777;
+  --border: #e2e6ec;
+  --danger: #d9534f;
+  --success: #2e9e5b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--primary);
+  color: #fff;
+  padding: 0 24px;
+  height: 56px;
+}
+
+.brand { font-size: 20px; font-weight: bold; }
+
+.nav { display: flex; align-items: center; gap: 20px; }
+.nav a { color: #dbe7f5; text-decoration: none; font-size: 15px; }
+.nav a.active, .nav a:hover { color: #fff; }
+.user-box { font-size: 14px; cursor: pointer; }
+
+.container { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+
+.search-card {
+  background: var(--card);
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 24px;
+}
+.search-card h2 { margin-bottom: 16px; }
+
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+}
+.search-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: var(--muted);
+  gap: 6px;
+}
+.search-form input {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 9px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  background: #eee;
+}
+.btn.primary { background: var(--primary); color: #fff; }
+.btn.primary:hover { background: var(--primary-dark); }
+.btn.full { width: 100%; margin-top: 12px; }
+.btn.danger { background: var(--danger); color: #fff; }
+.btn.small { padding: 5px 12px; font-size: 13px; }
+
+.results { display: flex; flex-direction: column; gap: 14px; }
+
+.train-card, .order-card {
+  background: var(--card);
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+.train-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.train-no { font-weight: bold; font-size: 17px; color: var(--primary); }
+.route { display: flex; align-items: center; gap: 12px; font-size: 15px; }
+.route .time { font-weight: bold; }
+.arrow { color: var(--muted); }
+.seats { display: flex; gap: 18px; margin-top: 10px; flex-wrap: wrap; }
+.seat-tag { font-size: 13px; color: var(--muted); }
+.seat-tag b { color: var(--danger); }
+
+.order-card .status { font-size: 13px; padding: 2px 8px; border-radius: 4px; }
+.status.paid { background: #e3f4ea; color: var(--success); }
+.status.cancelled { background: #f3e3e3; color: var(--danger); }
+
+.modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+}
+.modal.hidden { display: none; }
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 28px;
+  width: 340px;
+  position: relative;
+}
+.modal-content input, .modal-content select {
+  width: 100%;
+  padding: 9px 10px;
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+}
+.modal-content label { font-size: 13px; color: var(--muted); display: block; margin-top: 8px; }
+.close { position: absolute; right: 16px; top: 12px; font-size: 22px; cursor: pointer; color: var(--muted); }
+
+.tabs { display: flex; gap: 10px; margin-bottom: 8px; }
+.tab { flex: 1; background: #f0f0f0; border: none; padding: 8px; cursor: pointer; border-radius: 6px; }
+.tab.active { background: var(--primary); color: #fff; }
+
+.toast {
+  position: fixed;
+  bottom: 30px; left: 50%;
+  transform: translateX(-50%);
+  background: #333; color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  z-index: 200;
+}
+.toast.hidden { display: none; }
+
+.empty { text-align: center; color: var(--muted); padding: 40px; }
+
+@media (max-width: 640px) {
+  .search-form { flex-direction: column; align-items: stretch; }
+  .train-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+}

@@ -1,0 +1,57 @@
+/* 火车票管理后台样式 */
+:root {
+  --primary: #2c6fbb;
+  --primary-dark: #1f5494;
+  --bg: #eef1f5;
+  --card: #fff;
+  --border: #e2e6ec;
+  --muted: #777;
+  --danger: #d9534f;
+  --success: #2e9e5b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: #222; }
+.hidden { display: none !important; }
+
+.login-view { display: flex; align-items: center; justify-content: center; height: 100vh; }
+.login-card { background: var(--card); padding: 36px; border-radius: 12px; width: 320px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-align: center; }
+.login-card h2 { margin-bottom: 20px; }
+.login-card input { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid var(--border); border-radius: 6px; }
+.hint { font-size: 12px; color: var(--muted); margin-top: 12px; }
+
+.btn { border: none; border-radius: 6px; padding: 9px 16px; cursor: pointer; font-size: 14px; background: #e6e9ee; }
+.btn.primary { background: var(--primary); color: #fff; }
+.btn.primary:hover { background: var(--primary-dark); }
+.btn.full { width: 100%; }
+.btn.small { padding: 5px 12px; font-size: 13px; }
+.btn.danger { background: var(--danger); color: #fff; }
+
+.admin-top { display: flex; justify-content: space-between; align-items: center; background: var(--primary); color: #fff; padding: 0 24px; height: 56px; }
+.admin-top .brand { font-weight: bold; font-size: 18px; }
+.admin-top span { margin-right: 12px; }
+
+.admin-tabs { display: flex; gap: 4px; background: #fff; padding: 0 24px; border-bottom: 1px solid var(--border); }
+.atab { background: none; border: none; padding: 14px 18px; cursor: pointer; font-size: 15px; color: var(--muted); border-bottom: 2px solid transparent; }
+.atab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: bold; }
+
+.admin-main { padding: 24px; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+
+.table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+.table th, .table td { padding: 11px 14px; text-align: left; font-size: 14px; border-bottom: 1px solid var(--border); }
+.table th { background: #f7f9fb; color: var(--muted); font-weight: 600; }
+.table tr:last-child td { border-bottom: none; }
+
+.status { font-size: 12px; padding: 2px 8px; border-radius: 4px; }
+.status.paid { background: #e3f4ea; color: var(--success); }
+.status.cancelled { background: #f3e3e3; color: var(--danger); }
+
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.modal-content { background: #fff; border-radius: 10px; padding: 26px; width: 360px; position: relative; max-height: 90vh; overflow-y: auto; }
+.modal-content label { display: block; font-size: 13px; color: var(--muted); margin-top: 8px; }
+.modal-content input { width: 100%; padding: 8px 10px; margin-top: 4px; border: 1px solid var(--border); border-radius: 6px; }
+.modal-content button { margin-top: 16px; }
+.close { position: absolute; right: 16px; top: 12px; font-size: 22px; cursor: pointer; color: var(--muted); }
+
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 20px; border-radius: 6px; font-size: 14px; z-index: 200; }
+.toast.hidden { display: none; }

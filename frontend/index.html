@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>易行火车票 · opus-version2</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🚄 易行火车票</div>
+    <nav class="nav">
+      <a href="index.html" class="active">车票查询</a>
+      <a href="orders.html">我的订单</a>
+      <span id="userBox" class="user-box"></span>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="search-card">
+      <h2>车票查询</h2>
+      <form id="searchForm" class="search-form">
+        <label>出发地 <input type="text" id="from" placeholder="如 北京南" /></label>
+        <label>到达地 <input type="text" id="to" placeholder="如 上海虹桥" /></label>
+        <label>出发日期 <input type="date" id="date" /></label>
+        <button type="submit" class="btn primary">查询</button>
+      </form>
+    </section>
+
+    <section id="results" class="results"></section>
+  </main>
+
+  <!-- 登录 / 注册弹窗 -->
+  <div id="authModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" id="closeAuth">&times;</span>
+      <div class="tabs">
+        <button class="tab active" data-tab="login">登录</button>
+        <button class="tab" data-tab="register">注册</button>
+      </div>
+      <form id="authForm">
+        <input type="text" id="authUsername" placeholder="用户名" />
+        <input type="password" id="authPassword" placeholder="密码" />
+        <button type="submit" class="btn primary full">提交</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 下单弹窗 -->
+  <div id="bookModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" id="closeBook">&times;</span>
+      <h3 id="bookTitle">购票</h3>
+      <form id="bookForm">
+        <label>座位类型
+          <select id="seatType"></select>
+        </label>
+        <label>乘客姓名 <input type="text" id="passenger" placeholder="乘客真实姓名" /></label>
+        <button type="submit" class="btn primary full">确认购票</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
