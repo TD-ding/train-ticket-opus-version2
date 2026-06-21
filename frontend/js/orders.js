@@ -56,8 +56,9 @@ function renderOrder(o) {
   return div;
 }
 
-// 退票操作。
+// 退票操作，操作前二次确认避免误触。
 async function cancelOrder(id) {
+  if (!confirm("确定要退票吗？退票后座位将释放。")) return;
   try {
     await request(`/orders/${id}/cancel`, { method: "POST" });
     toast("退票成功");

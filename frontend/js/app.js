@@ -166,4 +166,10 @@ document.addEventListener("DOMContentLoaded", () => {
       tab.classList.add("active");
     };
   });
+  // 点击弹窗遮罩层空白处关闭弹窗。
+  document.querySelectorAll(".modal").forEach((modal) => {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.classList.add("hidden");
+    });
+  });
 });
