@@ -72,10 +72,7 @@ function renderTrain(t) {
   return div;
 }
 
-// 座位类型代码转中文。
-function seatName(code) {
-  return { business: "商务座", first: "一等座", second: "二等座" }[code] || code;
-}
+// 座位类型代码转中文（统一定义见 common.js 的 seatName）。
 
 // 打开购票弹窗。
 function openBook(train) {

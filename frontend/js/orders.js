@@ -1,7 +1,5 @@
 // 我的订单页逻辑：展示当前用户订单并支持退票。
-function seatName(code) {
-  return { business: "商务座", first: "一等座", second: "二等座" }[code] || code;
-}
+// 座位类型映射统一来自 common.js 的 seatName。
 
 // 加载并渲染订单列表。
 async function loadOrders() {
