@@ -7,7 +7,7 @@
     "start": "node src/server.js",
     "dev": "node src/server.js",
     "lint": "node node_modules/eslint/bin/eslint.js src/",
-    "test": "echo \"tests added in step 4\" && exit 0"
+    "test": "jest --forceExit --detectOpenHandles"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -17,7 +17,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
-    "eslint": "^9.9.0"
+    "eslint": "^9.9.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
   },
   "license": "MIT"
 }

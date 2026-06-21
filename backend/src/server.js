@@ -60,9 +60,11 @@ function ensureAdmin() {
 
 const PORT = process.env.PORT || 3000;
 
+// 启动时确保默认管理员存在（测试引入时同样需要）。
+ensureAdmin();
+
 // 仅在直接运行时启动监听；被测试引入时不自动监听。
 if (require.main === module) {
-  ensureAdmin();
   app.listen(PORT, () => {
     console.log(`Train ticket server running on port ${PORT}`);
   });

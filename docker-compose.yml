@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: train-ticket-opus-version2
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    environment:
+      - PORT=3000
+      - JWT_SECRET=${JWT_SECRET:-dev-secret-change-me}
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+    volumes:
+      # 持久化数据文件，容器重建后订单/用户不丢失
+      - ticket-data:/app/src/data
+    restart: unless-stopped
+
+volumes:
+  ticket-data:
